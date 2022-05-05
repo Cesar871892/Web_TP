@@ -1,0 +1,142 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Payment CRUD</title>
+</h:head>
+<h:body>
+<h:form>
+    <div class="card">
+    	<p:growl id="messages" showDetail="true"/>
+    	
+        <p:dataTable id="paymentDataTable" widgetVar="paymentDataTableWidget" var="payment" value="#{paymentView.payments}" 
+        		selection="#{paymentView.paymentsSelected}"  reflow="true"
+        		rowKey="#{payment.id}" paginator="true" paginatorPosition="bottom"
+        		rows="3" sortMode="single" allowUnsorting="true">
+        	
+        	<f:facet name="header">
+                <div class="table-header">
+                    <span style="font-weight: bold">PAGOS</span>
+                    <span class="filter-container ui-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <p:inputText id="globalSearch" value="#{paymentView.paymentSearch.name}" placeholder="Search"/>
+                    </span>
+                    <p:commandButton value="Buscar" icon="pi pi-check" actionListener="#{paymentView.searchPayment}"
+            			update="paymentDataTable" process="globalSearch @this"/>
+            		<p:commandButton value="Refresh" icon="pi pi-check" actionListener="#{paymentView.getAllPayment}"
+            			update="paymentDataTable" process="@this"/>
+
+                </div>
+            </f:facet>
+        	
+        	<p:column selectionMode="Multiple" style="width:16px;text-align:center" />
+        	
+            <p:column headerText="Id" sortBy="#{payment.id}">
+                <h:outputText value="#{payment.id}" />
+            </p:column>
+            <p:column headerText="Número de tarjeta" sortBy="#{payment.number}">
+                <h:outputText value="#{payment.number}" />
+            </p:column>
+          <!--  <p:column headerText="Date" sortBy="#{payment.date}">
+                <h:outputText value="#{payment.date}" />
+            </p:column>-->
+           <!--   <p:column headerText="CVV" sortBy="#{payment.code}">
+                <h:outputText value="#{payment.code}" />
+            </p:column>-->
+            <p:column headerText="Nombre" sortBy="#{payment.name}">
+                <h:outputText value="#{payment.name}" />
+            </p:column>
+            <p:column headerText="Email" sortBy="#{payment.email}">
+                <h:outputText value="#{payment.email}" />
+            </p:column>
+          <!--  <p:column headerText="Organizer" sortBy="#{payment.organizer.id}">
+                <h:outputText value="#{payment.organizer.name}" />
+            </p:column>-->
+            
+            
+            <p:column>
+            	<!--  <p:commandButton icon="pi pi-pencil" oncomplete="PF('paymentDialog').show()"
+            			styleClass="edit-button rounded-button ui-button-success" 
+            			update="@form:payment-content" process="@this">
+            		<f:setPropertyActionListener value="#{payment}" target="#{paymentView.paymentSelected}"/>
+            		<p:resetInput target="@form:payment-content"/>
+            	</p:commandButton> -->
+            	<p:commandButton value="Cancelar Pago"  style="margin-left: 10px;"
+            			styleClass="rounded-button ui-button-danger" process="@this"
+            			oncomplete="PF('deleteDialog').show()">
+            		<f:setPropertyActionListener value="#{payment}" target="#{paymentView.paymentSelected}"/>
+            	</p:commandButton>
+            </p:column>
+            
+           <!-- <p:ajax event="rowSelectCheckbox" update="payment-button-delete payment-button-edit " /> 
+            <p:ajax event="rowUnselectCheckbox" update="payment-button-delete payment-button-edit" />
+            <p:ajax event="toggleSelect" update="payment-button-delete payment-button-edit" />    -->        
+            
+            <f:facet name="footer">
+            	<p:commandButton process="paymentDataTable" value="Pagar" icon="pi pi-check" 
+            			actionListener="#{paymentView.createNew}" update="@form:payment-content"
+            			oncomplete="PF('paymentDialog').show()" styleClass="ui-button-raised ui-button-success" />
+            	
+            	
+            	
+            	<p:commandButton id="payment-button-delete" process="paymentDataTable" value="Cancelar" icon="pi pi-check" 
+            			oncomplete="PF('paymentDialog').show()" styleClass="ui-button-raised ui-button-danger"
+            			disabled="#{!paymentView.hasPaymentsSelected()}" update="paymentDataTable" />
+            </f:facet>
+        </p:dataTable>
+    </div>
+    <p:dialog header="Payment" widgetVar="paymentDialog" modal="true" showEffect="fade"
+    		minHeight="300" width="300" responsive="true">
+    	<p:outputPanel id="payment-content" class="ui-fluid">
+       			<div class="p-field">
+       			<p:outputLabel for="number">Número de tarjeta</p:outputLabel>
+       			<p:inputText id="number" value="#{paymentView.paymentSelected.number}" required="true"/>
+               </div>
+               
+               <div class="p-field">
+       			<p:outputLabel for="date">Fecha de expiración</p:outputLabel>
+       			<p:inputText id="date" value="#{paymentView.paymentSelected.date}" required="true"/>
+               </div>
+               
+                <div class="p-field">
+       			<p:outputLabel for="code">CVV</p:outputLabel>
+       			<p:inputText id="code" value="#{paymentView.paymentSelected.code}" required="true"/>
+               </div>
+               
+                <div class="p-field">
+       			<p:outputLabel for="name">Nombre del titular</p:outputLabel>
+       			<p:inputText id="name" value="#{paymentView.paymentSelected.name}" required="true"/>
+               </div>
+               
+                <div class="p-field">
+       			<p:outputLabel for="email">Correo electrónico</p:outputLabel>
+       			<p:inputText id="email" value="#{paymentView.paymentSelected.email}" required="true"/>
+               </div>
+               
+             <!--  <div class="p-field">
+       			<p:outputLabel for="organizer">Organizer</p:outputLabel>
+       			<p:inputText id="organizer" value="#{paymentView.paymentSelected.organizer.id}" required="true"/>
+               </div>-->
+               
+        </p:outputPanel>  
+        <f:facet name="footer">
+         	<p:commandButton value="Save" icon="pi pi-check" actionListener="#{paymentView.savePayment}"
+            		update="payment-content paymentDataTable" process="payment-content @this"/>
+         	<p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('paymentDialog').hide()"
+            		class="ui-button-secondary"/>
+     	</f:facet>	
+    </p:dialog>
+    <p:confirmDialog id="prueba" widgetVar="deleteDialog" showEffect="fade" width="300"
+                     message="Delete the item?" header="Confirm" severity="warn">
+        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{paymentView.deletePayment}"
+                         process="@this" oncomplete="PF('deleteDialog').hide()"
+                         update="paymentDataTable @form:messages" />
+        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                         onclick="PF('deleteDialog').hide()"/>
+    </p:confirmDialog>
+</h:form>
+
+</h:body>
+</html>
