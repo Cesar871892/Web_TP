@@ -18,14 +18,14 @@
         	
         	<f:facet name="header">
                 <div class="table-header">
-                    <span style="font-weight: bold">ORGANIZERS</span>
+                    <span style="font-weight: bold">ORGANIZADORES</span>
                     <span class="filter-container ui-input-icon-left">
                         <i class="pi pi-search"></i>
                         <p:inputText id="globalSearch" value="#{organizerView.organizerSearch.name}" placeholder="Search"/>
                     </span>
-                    <p:commandButton value="Search" icon="pi pi-check" actionListener="#{organizerView.searchOrganizer}"
+                    <p:commandButton value="Buscar" icon="pi pi-check" actionListener="#{organizerView.searchOrganizer}"
             			update="organizerDataTable" process="globalSearch @this"/>
-            		<p:commandButton value="Clean" icon="pi pi-check" actionListener="#{organizerView.getAllOrganizer}"
+            		<p:commandButton value="Refresh" icon="pi pi-check" actionListener="#{organizerView.getAllOrganizer}"
             			update="organizerDataTable" process="@this"/>
 
                 </div>
@@ -36,19 +36,19 @@
             <p:column headerText="Id" sortBy="#{organizer.id}">
                 <h:outputText value="#{organizer.id}" />
             </p:column>
-            <p:column headerText="Name" sortBy="#{organizer.name}">
+            <p:column headerText="Nombre" sortBy="#{organizer.name}">
                 <h:outputText value="#{organizer.name}" />
             </p:column>
-            <p:column headerText="LastName" sortBy="#{organizer.lastName}">
+            <p:column headerText="Apellidos" sortBy="#{organizer.lastName}">
                 <h:outputText value="#{organizer.lastName}" />
             </p:column>
-            <p:column headerText="Phone" sortBy="#{organizer.phone}">
+            <p:column headerText="Teléfono" sortBy="#{organizer.phone}">
                 <h:outputText value="#{organizer.phone}" />
             </p:column>
             <p:column headerText="Dni" sortBy="#{organizer.dni}">
                 <h:outputText value="#{organizer.dni}" />
             </p:column>
-            <p:column headerText="Address" sortBy="#{organizer.address}">
+            <p:column headerText="Dirección" sortBy="#{organizer.address}">
                 <h:outputText value="#{organizer.address}" />
             </p:column>
             <p:column headerText="Email" sortBy="#{organizer.email}">
@@ -56,13 +56,13 @@
             </p:column>
             
             <p:column>
-            	<p:commandButton icon="pi pi-pencil" oncomplete="PF('organizerDialog').show()"
+            	<p:commandButton value="Editar" oncomplete="PF('organizerDialog').show()"
             			styleClass="edit-button rounded-button ui-button-success" 
             			update="@form:organizer-content" process="@this">
             		<f:setPropertyActionListener value="#{organizer}" target="#{organizerView.organizerSelected}"/>
             		<p:resetInput target="@form:organizer-content"/>
             	</p:commandButton>
-            	<p:commandButton icon="pi pi-trash" style="margin-left: 10px;"
+            	<p:commandButton value="Eliminar" style="margin-left: 10px;"
             			styleClass="rounded-button ui-button-danger" process="@this"
             			oncomplete="PF('deleteDialog').show()">
             		<f:setPropertyActionListener value="#{organizer}" target="#{organizerView.organizerSelected}"/>
@@ -74,16 +74,16 @@
             <p:ajax event="toggleSelect" update="organizer-button-delete organizer-button-edit" />            
             
             <f:facet name="footer">
-            	<p:commandButton process="organizerDataTable" value="New" icon="pi pi-check" 
+            	<p:commandButton process="organizerDataTable" value="Agregar Organizador" icon="pi pi-check" 
             			actionListener="#{organizerView.createNew}" update="@form:organizer-content"
             			oncomplete="PF('organizerDialog').show()" styleClass="ui-button-raised ui-button-success" />
             	
-            	<p:commandButton id="organizer-button-edit" process="organizerDataTable" value="Edit" icon="pi pi-check" 
+            	<p:commandButton id="organizer-button-edit" process="organizerDataTable" value="Editar" icon="pi pi-check" 
             			actionListener="#{organizerView.editOrganizerSelected}" update="@form:organizer-content"
             			oncomplete="PF('organizerDialog').show()" styleClass="ui-button-raised ui-button-help"
             			disabled="#{!organizerView.hasOrganizerSelected()}" />
             	
-            	<p:commandButton id="organizer-button-delete" process="organizerDataTable" value="Delete" icon="pi pi-check" 
+            	<p:commandButton id="organizer-button-delete" process="organizerDataTable" value="Eliminar" icon="pi pi-check" 
             			oncomplete="PF('organizerDialog').show()" styleClass="ui-button-raised ui-button-danger"
             			disabled="#{!organizerView.hasOrganizersSelected()}" update="organizerDataTable" />
             </f:facet>
@@ -93,17 +93,17 @@
     		minHeight="300" width="300" responsive="true">
     	<p:outputPanel id="organizer-content" class="ui-fluid">
        		<div class="p-field">
-       			<p:outputLabel for="name">Name</p:outputLabel>
+       			<p:outputLabel for="name">Nombre</p:outputLabel>
        			<p:inputText id="name" value="#{organizerView.organizerSelected.name}" required="true"/>
                </div>
                
                <div class="p-field">
-       			<p:outputLabel for="lastName">LastName</p:outputLabel>
+       			<p:outputLabel for="lastName">Apellido</p:outputLabel>
        			<p:inputText id="lastName" value="#{organizerView.organizerSelected.lastName}" required="true"/>
                </div>
                
                <div class="p-field">
-       			<p:outputLabel for="phone">Phone</p:outputLabel>
+       			<p:outputLabel for="phone">Teléfono</p:outputLabel>
        			<p:inputText id="phone" value="#{organizerView.organizerSelected.phone}" required="true"/>
                </div>
                
@@ -113,7 +113,7 @@
                </div>
                
                <div class="p-field">
-       			<p:outputLabel for="address">Address</p:outputLabel>
+       			<p:outputLabel for="address">Dirección</p:outputLabel>
        			<p:inputText id="address" value="#{organizerView.organizerSelected.address}" required="true"/>
                </div>
                
